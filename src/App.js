@@ -1,26 +1,118 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
-function App() {
-  return (
+
+
+
+class App extends React.Component{
+    constructor(props){
+      super(props);
+      this.state = {
+        holder: 0,
+        display: 0,
+        currentValue:'',
+        shouldStartNewEntry: true,
+        currentOperator: '',
+        items: 0
+      }
+    }
+
+    handleACClick = () => {
+      this.setState({
+        holder: 0,
+        display: 0,
+        currentValue: '',
+        shouldStartNewEntry: true,
+        items: 0
+      })
+    }
+
+    handleNumberClick = (event) => {
+      const keyPressed = event.target.value;
+      if(this.state.shouldStartNewEntry){
+        this.setState({
+          currentValue: keyPressed,
+          display: keyPressed,
+          shouldStartNewEntry: !this.state.shouldStartNewEntry,
+        })
+      }else{
+        this.setState({
+          display: this.state.currentValue + keyPressed,
+          currentValue: this.state.currentValue + keyPressed,
+        })
+      }
+    }
+   
+      handleEqualsClick = () => {
+        const string = this.state.currentValue;
+        try{
+          const answer = eval(string);
+          this.setState({
+            display: answer,
+            shouldStartNewEntry: true
+          })
+        }catch(err){
+          this.setState({
+            display: "syntax error",
+            shouldStartNewEntry: true
+          })
+        }
+      }
+    
+    
+
+   
+
+
+
+  render() {
+   
+let font = Math.floor((50 - this.state.display.length))
+
+font = `${font}px`
+
+const fontStyles = {  
+  fontSize: font,
+  
+}
+console.log(fontStyles);  
+  return(
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+        <div className="calculatorScreen" style={fontStyles}>
+        
+            <p className="calculatorText"> {this.state.display}</p>
+        </div>
+        <div className="buttonRow topmost">
+        <button value="AC" className="topRow" onClick={this.handleACClick}>AC</button>
+        <button value="/" className="topRow" onClick={this.handleNumberClick}>÷</button>
+        </div>
+        <div className="buttonRow">
+        <button value="7" onClick={this.handleNumberClick}>7</button>
+        <button value="8" onClick={this.handleNumberClick}>8</button>
+        <button value="9" onClick={this.handleNumberClick}>9</button>
+        <button value="*" onClick={this.handleNumberClick} className="orangeButtons">*</button>
+        </div>
+        <div className="buttonRow">
+        <button value="4" onClick={this.handleNumberClick}>4</button>
+        <button value="5" onClick={this.handleNumberClick}>5</button>
+        <button value="6" onClick={this.handleNumberClick}>6</button>
+        <button value="-" onClick={this.handleNumberClick} className="orangeButtons">-</button>
+        </div>
+        <div className="buttonRow">
+        <button value="1" onClick={this.handleNumberClick}>1</button>
+        <button value="2" onClick={this.handleNumberClick}>2</button>
+        <button value="3" onClick={this.handleNumberClick}>3</button>
+        <button value="+" onClick={this.handleNumberClick} className="orangeButtons">+</button>
+        </div>
+        <div className="buttonRow">
+        <button value="0" onClick={this.handleNumberClick} className="zeroButton">0</button>
+        <button value="." onClick={this.handleNumberClick}>.</button>
+        <button value="=" onClick={this.handleEqualsClick} className="orangeButtons">=</button>
+        </div>
+        
+    </div>  
   );
+}
 }
 
 export default App;
