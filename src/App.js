@@ -46,10 +46,14 @@ class App extends React.Component{
       handleEqualsClick = () => {
         const string = this.state.currentValue;
         try{
-          const answer = eval(string);
+          let answer = eval(string);
+          if(Number.isInteger(answer)){
+            answer = answer.toFixed(2)
+          }
           this.setState({
             display: answer,
-            shouldStartNewEntry: true
+            currentValue: answer,
+            shouldStartNewEntry: false
           })
         }catch(err){
           this.setState({
@@ -75,7 +79,6 @@ const fontStyles = {
   fontSize: font,
   
 }
-console.log(fontStyles);  
   return(
     <div className="App">
         <div className="calculatorScreen" style={fontStyles}>
